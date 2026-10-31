@@ -184,6 +184,14 @@ if ($uv) {
     else { Warn "Playwright install failed. Retry: uvx --from playwright==$PlaywrightVersion playwright install chromium" }
 }
 
+# ------------------------------------------------------------------ 5b. Fit engine (trimesh etc.)
+if ($uv) {
+    Step 'Fit engine (mesh analysis for /fit)'
+    $fitOut = Run-Native uv run --quiet (Join-Path $PSScriptRoot 'fit_check.py') selftest | Out-String
+    if ($fitOut -match '"ok": true') { Ok 'Fit engine installed and selftest passed' }
+    else { Warn "Fit engine selftest failed. Run: uv run scripts\fit_check.py selftest" }
+}
+
 # ------------------------------------------------------------------ 6. Workspace
 Step 'Workspace'
 if (-not $Workspace) { $Workspace = if ($cfg.workspace) { [string]$cfg.workspace } else { Join-Path $HOME 'Alif3D' } }

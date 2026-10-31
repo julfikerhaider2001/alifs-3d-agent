@@ -4,11 +4,14 @@
 
 A Claude Code plugin (with its own private marketplace) that turns a 3D product file into social posters:
 
-1. **Render**: Blender, driven through [MCP for Blender](https://github.com/ahujasid/blender-mcp),
+1. **Fit check** (`/fit`): paste a model link (Printables, Thingiverse, direct file) or a file. The agent
+   downloads it, measures its holes, checks the physical fit and similarity against your **AC lamp** (E27
+   holder) and **DC lamp** (USB puck light), and places it on the lamp in Blender to check for collisions.
+2. **Render**: Blender, driven through [MCP for Blender](https://github.com/ahujasid/blender-mcp),
    imports your FBX/OBJ, applies Poly Haven PBR materials, an HDRI, a shadow-catcher ground and three
    85mm cameras (hero 3/4, front, detail). It saves `renders/<name>.blend`, then renders headless in
    Cycles on your GPU to 2160px+ PNGs, opaque and transparent.
-2. **Poster**: an HTML/CSS poster built from your brand sheet, with English and Bangla text rendered by
+3. **Poster**: an HTML/CSS poster built from your brand sheet, with English and Bangla text rendered by
    Chromium (Inter, Hind Siliguri, Noto Sans Bengali), exported at 1080×1350 feed, 1080×1920
    story and 1200×630 Facebook.
 
@@ -29,8 +32,8 @@ installs the dependencies, and registers the plugin. See [INSTALL.md](INSTALL.md
 **By hand**, in PowerShell:
 
 ```powershell
-gh repo clone julfikerhaider2001/alifs-3d-agent $HOMElifs-3d-agent
-cd $HOMElifs-3d-agent
+gh repo clone julfikerhaider2001/alifs-3d-agent $HOME\alifs-3d-agent
+cd $HOME\alifs-3d-agent
 powershell -ExecutionPolicy Bypass -File .\scripts\check-env.ps1   # read-only report
 powershell -ExecutionPolicy Bypass -File .\install.ps1              # -InstallBlender, -WithFusion, -Workspace D:\...
 ```
@@ -52,6 +55,8 @@ Because the plugin runs straight from the clone, `git pull` updates it.
 | `scripts/setup.ps1` | dependencies + per-PC `local.config.json` |
 | `scripts/doctor.py` | pass/fail health check (also `/alifs-3d-agent:studio-doctor`) |
 | `scripts/render.py`, `scripts/export_poster.py` | headless Blender render, HTML → PNG export |
+| `scripts/fetch_model.py`, `scripts/fit_check.py` | model download, hole measurement, fit and similarity |
+| `references/` | AC lamp (E27 holder) and DC lamp (puck light) reference definitions |
 | `skills/`, `agents/`, `.mcp.json` | the plugin: skills, subagents, Blender and Fusion MCP servers |
 | `fonts/` | Inter, Hind Siliguri, Noto Sans Bengali (OFL) |
 | `workspace-template/` | copied to your workspace (`input/`, `renders/`, `posters/`, `CLAUDE.md`) |
@@ -63,10 +68,22 @@ Start Claude Code in your workspace folder, put a model in `input/`, open Blende
 ```
 /alifs-3d-agent:shoot chair.fbx
 /alifs-3d-agent:shoot bottle.fbx interior "নতুন বোতল, এখন পাওয়া যাচ্ছে"
+/alifs-3d-agent:fit https://www.printables.com/model/889966-lampshade-for-ikea-holmo-or-any-standard-e27-socke ac
+/alifs-3d-agent:fit C:\Users\me\Downloads\puck-holder.3mf dc "নতুন হোল্ডার"
 /alifs-3d-agent:studio-doctor
 ```
 
-Outputs go to `renders/` and `posters/`. Fill in `skills/social-poster/brand.md` once (or put a
+`/fit` runs the whole chain: download → fit report (`fit/<name>/report.md`) → live Blender check →
+render → posters. If the part doesn't fit, it stops and asks before rendering.
+
+- **Where downloads work:** Printables (no login), Thingiverse (add your own API token from
+  thingiverse.com/developers to `local.config.json` as `thingiverse_token`), and direct file links.
+  MakerWorld and other login-only sites aren't scraped: download the file in your browser and give the path.
+- **References:** `references/ac-lamp` and `references/dc-lamp` are **provisional** (typical sizes, because
+  the store listings publish none). Measure your parts or add their CAD files; see
+  [references/README.md](references/README.md).
+
+Outputs go to `renders/`, `fit/` and `posters/`. Fill in `skills/social-poster/brand.md` once (or put a
 `brand.md` in the workspace to override it).
 
 ## Update

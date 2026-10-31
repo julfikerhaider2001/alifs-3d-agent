@@ -1,0 +1,43 @@
+{
+  "id": "dc-lamp",
+  "name": "DC lamp: ANTOTEN 5V USB LED puck light (dimmable, 3 colour temperatures)",
+  "source_url": "https://www.amazon.com/dp/B09R18WZ25",
+  "status": "provisional",
+  "status_note": "The listing publishes no dimensions; these are typical USB puck-light values (about 70 x 18 mm). Replace them with caliper measurements (see measure_me), or set 'model' to a real CAD/mesh file in this folder.",
+  "model": null,
+  "units": "mm",
+  "orientation": "Z up: mounting back at z=0, lens facing +Z; USB cable leaves the side along +X",
+  "proxy": [
+    { "shape": "cylinder", "d": 70.0, "z": [0, 15],   "note": "puck body" },
+    { "shape": "cylinder", "d": 60.0, "z": [15, 18],  "note": "lens / front dome" },
+    { "shape": "side_cylinder", "d": 4.0, "x": [33, 60], "z_center": 6.0, "note": "USB cable strain relief" }
+  ],
+  "interfaces": [
+    {
+      "name": "puck_pocket",
+      "description": "A holder, housing, recessed mount or diffuser whose round pocket the puck sits in.",
+      "shaft_d": 70.0,
+      "clearance": [0.2, 1.5],
+      "min_length": 6.0,
+      "seat_z": 0.0,
+      "also_check": "a slot or hole for the USB cable (about 4 mm) at the pocket wall"
+    },
+    {
+      "name": "lens_opening",
+      "description": "A front ring or bezel whose opening frames the lens.",
+      "shaft_d": 60.0,
+      "clearance": [0.2, 2.0],
+      "max_hole_d": 69.0,
+      "min_length": 0.8,
+      "seat_z": 15.0
+    }
+  ],
+  "measure_me": [
+    "Puck outer diameter at the widest point",
+    "Total height (thickness)",
+    "Lens / front diameter and how far it sticks out",
+    "Mounting: adhesive pad, screw holes (spacing and hole size) or magnet",
+    "Where the USB cable leaves (side or back) and its strain-relief diameter",
+    "Photos: front, back, side"
+  ]
+}

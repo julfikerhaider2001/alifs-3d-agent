@@ -193,14 +193,31 @@ def main() -> int:
     else:
         check("Playwright poster export", "FAIL", "skipped (uv or fonts missing)", "Fix the checks above first")
 
-    # 8. workspace
+    # 8. fit engine + lamp references
+    if uv:
+        res = subprocess.run([uv, "run", "--quiet", str(REPO_ROOT / "scripts" / "fit_check.py"), "selftest"],
+                             capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=600,
+                             env={**os.environ, "PYTHONIOENCODING": "utf-8"})
+        if res.returncode == 0:
+            check("Fit engine", "PASS", "selftest passed (trimesh, STEP/3MF loading, fit verdicts)")
+        else:
+            tail = (res.stdout + res.stderr).strip().splitlines()[-1:] or ["no output"]
+            check("Fit engine", "FAIL", tail[0][:300], "Run: uv run scripts\\fit_check.py selftest  and read the error")
+    for ref in sorted((REPO_ROOT / "references").glob("*/reference.json")):
+        status = json.loads(ref.read_text(encoding="utf-8")).get("status", "?")
+        check(f"Reference {ref.parent.name}", "PASS" if status != "provisional" else "WARN",
+              status if status != "provisional" else "provisional sizes (typical values, not measured)")
+    token = (cfg or {}).get("thingiverse_token") or os.environ.get("THINGIVERSE_TOKEN")
+    check("Thingiverse token (optional)", "INFO", "set" if token else "not set; Thingiverse links need one")
+
+    # 9. workspace
     ws = (cfg or {}).get("workspace")
     if ws and all((Path(ws) / d).is_dir() for d in ("input", "renders", "posters")):
         check("Workspace", "PASS", ws)
     else:
         check("Workspace", "FAIL", f"{ws!r} missing or incomplete", setup_fix)
 
-    # 9. Fusion add-in (optional)
+    # 10. Fusion add-in (optional)
     appdata = os.environ.get("APPDATA", "")
     addin = Path(appdata) / "Autodesk" / "Autodesk Fusion 360" / "API" / "AddIns" / "Fusion360MCP"
     check("Fusion360MCP add-in (optional)", "INFO",

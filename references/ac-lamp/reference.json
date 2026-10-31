@@ -1,0 +1,44 @@
+{
+  "id": "ac-lamp",
+  "name": "AC lamp: ES E27 lamp holder with M10 nipple and lampshade collar",
+  "source_url": "https://www.daraz.com.bd/products/1pcs-es-e27-m10-light-bulb-lamp-holder-lampshade-collar-lighting-pendant-socket-screw-2-colors-i1581146309-s12671081540.html",
+  "status": "provisional",
+  "status_note": "Dimensions are typical values for generic E27 holders with a shade collar, not measured from the real part. Replace them with caliper measurements (see measure_me), or set 'model' to a real CAD/mesh file in this folder.",
+  "model": null,
+  "units": "mm",
+  "orientation": "Z up: bulb opening at z=0, M10 nipple at the top",
+  "proxy": [
+    { "shape": "tube",     "od": 40.0, "id": 27.5, "z": [0, 46],  "note": "E27 socket body with outer shade thread" },
+    { "shape": "tube",     "od": 57.0, "id": 40.0, "z": [6, 10],  "note": "lampshade collar ring (screws onto body)" },
+    { "shape": "tube",     "od": 46.0, "id": 40.0, "z": [30, 33], "note": "shoulder the shade sits against" },
+    { "shape": "cylinder", "d": 34.0,              "z": [46, 52], "note": "cap" },
+    { "shape": "cylinder", "d": 10.0,              "z": [52, 64], "note": "M10x1 threaded nipple" }
+  ],
+  "interfaces": [
+    {
+      "name": "shade_hole",
+      "description": "A lampshade, cover or plate whose hole slides over the holder body and is clamped between the shoulder and the collar ring.",
+      "shaft_d": 40.0,
+      "clearance": [0.3, 2.0],
+      "max_hole_d": 55.0,
+      "min_length": 1.2,
+      "seat_z": 10.0
+    },
+    {
+      "name": "m10_mount",
+      "description": "A bracket, canopy or base with a hole for the M10x1 threaded nipple (secured with an M10 nut).",
+      "shaft_d": 10.0,
+      "clearance": [0.2, 1.2],
+      "min_length": 2.0,
+      "seat_z": 52.0
+    }
+  ],
+  "measure_me": [
+    "Body outer diameter where the shade thread is (the shaft the shade hole goes over)",
+    "Collar ring outer diameter and thickness",
+    "Shoulder diameter and its height from the bulb end",
+    "Total height without the nipple, and nipple length",
+    "Nipple thread: confirm M10x1 (outer diameter ~9.9 mm)",
+    "Clamp range: max shade thickness between shoulder and collar"
+  ]
+}

@@ -10,6 +10,11 @@ workspace-template/posters/*
 !workspace-template/posters/.gitkeep
 workspace-template/input/*
 !workspace-template/input/.gitkeep
+workspace-template/fit/*
+!workspace-template/fit/.gitkeep
+
+# Generated reference meshes (rebuilt from reference.json by fit_check.py)
+references/*/proxy.stl
 
 # Blender backups
 *.blend1

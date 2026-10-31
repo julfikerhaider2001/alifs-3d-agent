@@ -49,7 +49,8 @@ Tell the user:
   2. Open Blender once. The MCP server auto-starts on 9877 (N panel → MCP for Blender).
   3. Fusion only: Shift+S → Add-Ins → Fusion360MCP → Run.
   4. Fill in `skills/social-poster/brand.md`.
-- how to use it: `/alifs-3d-agent:shoot <file>` and `/alifs-3d-agent:studio-doctor`.
+- how to use it: `/alifs-3d-agent:fit <model link or file> [ac|dc]`, `/alifs-3d-agent:shoot <file>` and `/alifs-3d-agent:studio-doctor`.
+- optional: for Thingiverse links, a free API token from thingiverse.com/developers in `local.config.json` (`thingiverse_token`).
 
 ## If something fails
 

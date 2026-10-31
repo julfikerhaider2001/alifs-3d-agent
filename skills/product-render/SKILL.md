@@ -25,6 +25,13 @@ Inputs: a model file (FBX or OBJ), a mood (`studio` default, or `interior`), and
    auto-starts on port 9877; N panel → MCP for Blender), make sure no other MCP client is
    connected to it, and run `/alifs-3d-agent:studio-doctor`.
 
+## Starting from a fit assembly
+
+If you were given an existing `renders/<name>.blend` from the fit-check skill (a lamp reference plus a
+part already placed on it), open it (`bpy.ops.wm.open_mainfile`) and **skip steps 1–2**: don't
+re-import, re-scale or re-centre anything. Treat all objects together as the product: the ground goes
+under the lowest point of the assembly, and the cameras frame the whole assembly. Then continue from step 3.
+
 ## 1. Clean scene and import
 
 In `execute_blender_code`:
