@@ -1,0 +1,82 @@
+<!doctype html>
+<!--
+  alifs-3d-agent poster template. Copy to <workspace>/posters/<name>.html and edit.
+  export_poster.py sets <html data-size="feed|story|facebook"> and injects the fonts;
+  only name the families here: "Inter", "Hind Siliguri", "Noto Sans Bengali".
+-->
+<html lang="en" data-size="feed">
+<head>
+<meta charset="utf-8">
+<title>Poster</title>
+<style>
+  :root {
+    /* from brand.md */
+    --primary: #0F766E;
+    --accent: #F59E0B;
+    --bg: #F4F1EC;
+    --text: #111111;
+    --latin: "Inter", sans-serif;
+    --bn-head: "Hind Siliguri", "Noto Sans Bengali", sans-serif;
+    --bn-body: "Noto Sans Bengali", "Hind Siliguri", sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body {
+    background: radial-gradient(120% 80% at 50% 60%, #fff 0%, var(--bg) 60%);
+    color: var(--text);
+    font-family: var(--latin);
+  }
+  .stage {
+    position: relative; width: 100%; height: 100%;
+    display: grid; padding: 72px;
+    grid-template-rows: auto 1fr auto; gap: 24px;
+  }
+  .logo { height: 64px; justify-self: start; }
+  .logo img { height: 100%; }
+  /* the image is pinned inside its grid cell so a large render can never push the text */
+  .product { position: relative; min-height: 0; }
+  .product img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain;
+                 filter: drop-shadow(0 30px 40px rgba(0,0,0,.18)); }
+  .copy { display: grid; gap: 14px; }
+  .headline { font: 800 76px/1.05 var(--latin); letter-spacing: -0.02em; color: var(--primary); }
+  .headline:lang(bn) { font: 700 72px/1.35 var(--bn-head); letter-spacing: 0; }
+  .sub { font: 500 34px/1.3 var(--latin); }
+  .sub:lang(bn) { font: 500 32px/1.45 var(--bn-body); }
+  .tagline { font: 600 24px/1.4 var(--latin); color: var(--accent); }
+  .tagline:lang(bn) { font: 600 24px/1.5 var(--bn-head); }
+  .cta { justify-self: start; background: var(--primary); color: #fff;
+         font: 700 28px/1 var(--latin); padding: 18px 30px; border-radius: 999px; }
+  .cta:lang(bn) { font: 600 28px/1.2 var(--bn-head); }
+
+  /* story 1080x1920: keep top 250px and bottom 340px clear */
+  html[data-size="story"] .stage { padding: 250px 72px 340px; }
+  html[data-size="story"] .logo { position: absolute; top: 120px; left: 72px; height: 72px; }
+  html[data-size="story"] .stage { grid-template-rows: 1fr auto; }
+  html[data-size="story"] .headline { font-size: 88px; }
+
+  /* facebook 1200x630: landscape, product left, text right */
+  html[data-size="facebook"] .stage {
+    padding: 48px 64px; grid-template-columns: 1.1fr 1fr; grid-template-rows: auto 1fr;
+    column-gap: 40px;
+  }
+  html[data-size="facebook"] .logo { grid-column: 2; height: 48px; justify-self: end; }
+  html[data-size="facebook"] .product { grid-column: 1; grid-row: 1 / 3; }
+  html[data-size="facebook"] .copy { grid-column: 2; grid-row: 2; align-self: center; }
+  html[data-size="facebook"] .headline { font-size: 56px; }
+  html[data-size="facebook"] .headline:lang(bn) { font-size: 52px; }
+  html[data-size="facebook"] .sub { font-size: 26px; }
+</style>
+</head>
+<body>
+  <main class="stage">
+    <div class="logo"><!-- <img src="../brand/logo.png" alt=""> --></div>
+    <div class="product"><img src="../renders/NAME_hero_transparent.png" alt=""></div>
+    <div class="copy">
+      <h1 class="headline" lang="bn">নতুন পণ্য</h1>
+      <p class="sub" lang="en">Product name in Inter</p>
+      <p class="tagline" lang="bn">ট্যাগলাইন এখানে</p>
+      <span class="cta" lang="bn">অর্ডার করুন</span>
+    </div>
+  </main>
+</body>
+</html>

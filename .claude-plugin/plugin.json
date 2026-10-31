@@ -1,0 +1,11 @@
+{
+  "name": "alifs-3d-agent",
+  "displayName": "Alif's 3D Agent",
+  "version": "0.1.0",
+  "description": "Alif's 3D Agent: product render to social poster pipeline. Blender (via MCP) renders a 3D product, then HTML/CSS posters are exported to PNG with Bengali-safe fonts.",
+  "author": {
+    "name": "julfikerhaider2001"
+  },
+  "repository": "https://github.com/julfikerhaider2001/alifs-3d-agent",
+  "keywords": ["blender", "fusion360", "product-render", "social-media", "poster", "bangla"]
+}

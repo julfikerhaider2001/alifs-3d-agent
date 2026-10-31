@@ -1,0 +1,14 @@
+{
+  "name": "alifs-3d-agent",
+  "description": "Private marketplace for Alif's 3D Agent",
+  "owner": {
+    "name": "julfikerhaider2001"
+  },
+  "plugins": [
+    {
+      "name": "alifs-3d-agent",
+      "source": "./",
+      "description": "Alif's 3D Agent: product render to social poster pipeline (Blender MCP + Playwright)"
+    }
+  ]
+}

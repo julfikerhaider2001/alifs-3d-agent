@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "blender": {
+      "command": "uvx",
+      "args": ["mcp-for-blender==2.1.9"],
+      "env": {
+        "BLENDER_HOST": "localhost",
+        "BLENDER_PORT": "9877",
+        "DISABLE_TELEMETRY": "true"
+      }
+    },
+    "fusion360": {
+      "command": "uvx",
+      "args": ["--with", "mcp~=1.0", "fusion360-mcp-server==0.1.0", "--mode", "socket"]
+    }
+  }
+}

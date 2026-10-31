@@ -1,0 +1,14 @@
+{
+  "blender_path": "C:\\Program Files\\Blender Foundation\\Blender 5.2\\blender.exe",
+  "blender_version": "5.2.3",
+  "blender_mcp_port": 9877,
+  "fusion_mcp_port": 9876,
+  "gpu_backend": "OPTIX",
+  "workspace": "C:\\Users\\YOU\\Alif3D",
+  "render": {
+    "samples": 256,
+    "resolution_x": 2160,
+    "resolution_y": 2700,
+    "denoise": true
+  }
+}
