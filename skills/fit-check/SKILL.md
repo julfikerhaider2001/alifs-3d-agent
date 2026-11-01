@@ -61,7 +61,11 @@ from mathutils.bvhtree import BVHTree
 MM = 0.001
 def imp(path, name):
     bpy.ops.wm.stl_import(filepath=path, global_scale=MM)
-    o = bpy.context.selected_objects[0]; o.name = name; return o
+    o = bpy.context.selected_objects[0]; o.name = name
+    # Blender 5.2 stores global_scale as object scale; bake it so place() works in metres
+    bpy.context.view_layer.objects.active = o
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    return o
 ref  = imp(r"<blender>/REF_<id>.stl", "REF_<id>")
 part = imp(r"<blender>/<part>.stl", "PART_<name>")
 ```

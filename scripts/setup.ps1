@@ -147,7 +147,7 @@ if ($blender -and $uv) {
         Invoke-WebRequest 'https://raw.githubusercontent.com/ahujasid/blender-mcp/main/addon.py' -OutFile $addonFile -UseBasicParsing
     }
     $src = $addonFile.Replace("'", "\'")
-    $expr = "import bpy, addon_utils, shutil, os; d = bpy.utils.user_resource('SCRIPTS', path='addons', create=True); shutil.copy2(r'$src', os.path.join(d, 'blender_mcp.py')); addon_utils.enable('blender_mcp', default_set=True, persistent=True); bpy.ops.wm.save_userpref(); print('RS_ADDON_OK' if 'blender_mcp' in bpy.context.preferences.addons else 'RS_ADDON_FAIL')"
+    $expr = "import bpy, addon_utils, shutil, os; d = bpy.utils.user_resource('SCRIPTS', path='addons', create=True); shutil.copy2(r'$src', os.path.join(d, 'blender_mcp.py')); bpy.utils.refresh_script_paths(); addon_utils.enable('blender_mcp', default_set=True, persistent=True); bpy.ops.wm.save_userpref(); print('RS_ADDON_OK' if 'blender_mcp' in bpy.context.preferences.addons else 'RS_ADDON_FAIL')"
     $out = Run-Native $blender -b --python-exit-code 1 --python-expr $expr | Out-String
     if ($out -match 'RS_ADDON_OK') { Ok 'Blender MCP addon installed + enabled, user prefs saved' }
     else { Warn "Addon install failed. Blender output tail:`n$($out.Trim() -split "`n" | Select-Object -Last 8 | Out-String)" }
@@ -192,6 +192,25 @@ if ($uv) {
     else { Warn "Fit engine selftest failed. Run: uv run scripts\fit_check.py selftest" }
 }
 
+# ------------------------------------------------------------------ 5c. Production sheet (slicer)
+Step 'Bambu Studio (slicer for the production sheet)'
+$bambu = 'C:\Program Files\Bambu Studio\bambu-studio.exe'
+if (Test-Path $bambu) { $cfg.bambu_studio_path = $bambu; Ok "Bambu Studio at $bambu" }
+else { Warn 'Bambu Studio not found: production sheets will estimate grams and print time from volume. Install: winget install Bambulab.Bambustudio' }
+
+# ------------------------------------------------------------------ 5d. Hallmark (anti-AI-design skill for posters)
+Step 'Hallmark design skill'
+$hallmark = Join-Path $HOME '.claude\skills\hallmark\SKILL.md'
+if (Test-Path $hallmark) { Ok 'Hallmark already installed' }
+elseif (Get-Command node -ErrorAction SilentlyContinue) {
+    $src = Join-Path $env:TEMP 'hallmark-src'
+    Remove-Item $src -Recurse -Force -ErrorAction SilentlyContinue
+    # LF endings matter: with CRLF the installer rejects the theme files and the SKILL.md frontmatter
+    Run-Native git -c core.autocrlf=false clone --quiet --depth 1 https://github.com/Nutlope/hallmark.git $src | Out-Host
+    Run-Native node (Join-Path $src 'skills\hallmark\scripts\install.mjs') --claude | Select-Object -Last 3 | Out-Host
+    if (Test-Path $hallmark) { Ok 'Hallmark installed to ~/.claude/skills/hallmark' } else { Warn 'Hallmark install failed; see the output above' }
+} else { Warn 'Node.js not found, so Hallmark (poster design rules) was not installed. Install Node 18+ and re-run.' }
+
 # ------------------------------------------------------------------ 6. Workspace
 Step 'Workspace'
 if (-not $Workspace) { $Workspace = if ($cfg.workspace) { [string]$cfg.workspace } else { Join-Path $HOME 'Alif3D' } }
@@ -205,6 +224,13 @@ Get-ChildItem $template -Recurse -Force | ForEach-Object {
     elseif ($_.Name -ne '.gitkeep' -and -not (Test-Path $dest)) { Copy-Item $_.FullName $dest; $copied++ }
 }
 $cfg.workspace = (Resolve-Path $Workspace).Path
+Copy-Item (Join-Path $RepoRoot 'brand') (Join-Path $Workspace 'brand') -Recurse -Force
+# the workspace CLAUDE.md pulls in the agent's shared notes, which live in the GitHub repo
+$wsClaude = Join-Path $Workspace 'CLAUDE.md'
+$import = "@$((Join-Path $RepoRoot 'CLAUDE.md') -replace '\\','/')"
+if ((Test-Path $wsClaude) -and -not (Select-String -Path $wsClaude -SimpleMatch $import -Quiet)) {
+    Add-Content -Path $wsClaude -Encoding utf8 -Value "`n## Agent notes (shared through GitHub)`n$import"
+}
 Ok "Workspace $($cfg.workspace) ($copied new files)"
 
 # ------------------------------------------------------------------ 7. Fusion add-in (optional)

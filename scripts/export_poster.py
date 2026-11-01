@@ -12,8 +12,8 @@ Writes <out>/<NAME>_<size>.png (default out: <workspace>/posters from local.conf
 
 Before each screenshot the exporter:
   * sets <html data-size="feed|story|facebook"> so the poster CSS can adapt its layout,
-  * injects @font-face rules for the bundled fonts (Inter, Hind Siliguri,
-    Noto Sans Bengali) as data: URIs, so the poster only names the families,
+  * injects @font-face rules for the bundled fonts (Inter, Space Grotesk, JetBrains Mono,
+    Hind Siliguri, Noto Sans Bengali) as data: URIs, so the poster only names the families,
   * waits for fonts, and fails if any Bangla text is not set in a Bengali font.
 The last stdout line is JSON: {"ok": true, "files": [...]}.
 """
@@ -30,6 +30,8 @@ from studio_config import FONTS_DIR, POSTER_SIZES, ConfigError, load_config, wor
 FONT_FACES = [
     # (family, file, weight range)
     ("Inter", "Inter-Variable.ttf", "100 900"),
+    ("Space Grotesk", "SpaceGrotesk-Variable.ttf", "300 700"),
+    ("JetBrains Mono", "JetBrainsMono-Variable.ttf", "100 800"),
     ("Noto Sans Bengali", "NotoSansBengali-Variable.ttf", "100 900"),
     ("Hind Siliguri", "HindSiliguri-Regular.ttf", "400"),
     ("Hind Siliguri", "HindSiliguri-Medium.ttf", "500"),

@@ -1,0 +1,39 @@
+{
+  "_note": "Production cost assumptions in BDT. Edit to match your shop; production.py reads this every run.",
+  "filament_bdt_per_kg": {
+    "PLA Basic": 2200,
+    "PLA Matte": 2500,
+    "PLA+": 2300,
+    "PETG": 2400,
+    "ABS": 2400,
+    "TPU": 3500
+  },
+  "brand_rate_bdt_per_g": {
+    "PLA Basic": 6,
+    "PLA Matte": 6,
+    "PLA+": 7,
+    "PETG": 7,
+    "ABS": 8
+  },
+  "density_g_cm3": {
+    "PLA Basic": 1.24,
+    "PLA Matte": 1.24,
+    "PLA+": 1.24,
+    "PETG": 1.27,
+    "ABS": 1.04,
+    "TPU": 1.21
+  },
+  "printer_watts": { "A1": 95, "A1 mini": 80, "P1S": 110, "P1P": 105, "X1C": 120 },
+  "electricity_bdt_per_kwh": 12,
+  "machine_bdt_per_hour": 15,
+  "labour_bdt": 60,
+  "packaging_bdt": 40,
+  "failure_allowance": 0.10,
+  "margin": 0.40,
+  "round_price_to": 10,
+  "kits": {
+    "_note": "Assumed Dhaka retail prices per unit; replace with what you actually pay.",
+    "AC lamp": { "E27 holder with collar ring": 120, "Pendant cable with plug, 1.5 m": 180, "LED bulb E27 7 W warm": 150 },
+    "DC lamp": { "5 V USB puck light": 450 }
+  }
+}

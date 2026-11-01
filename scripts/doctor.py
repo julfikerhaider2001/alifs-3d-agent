@@ -162,7 +162,8 @@ def main() -> int:
         check("GPU backend", "WARN", f"config says {configured}; could not verify without Blender")
 
     # 6. fonts
-    expected = ["Inter-Variable.ttf", "NotoSansBengali-Variable.ttf", "HindSiliguri-Regular.ttf",
+    expected = ["Inter-Variable.ttf", "SpaceGrotesk-Variable.ttf", "JetBrainsMono-Variable.ttf",
+                "NotoSansBengali-Variable.ttf", "HindSiliguri-Regular.ttf",
                 "HindSiliguri-Medium.ttf", "HindSiliguri-SemiBold.ttf", "HindSiliguri-Bold.ttf"]
     missing = [f for f in expected if not (FONTS_DIR / f).is_file()]
     check("Fonts", "FAIL" if missing else "PASS",
@@ -207,6 +208,20 @@ def main() -> int:
         status = json.loads(ref.read_text(encoding="utf-8")).get("status", "?")
         check(f"Reference {ref.parent.name}", "PASS" if status != "provisional" else "WARN",
               status if status != "provisional" else "provisional sizes (typical values, not measured)")
+    # 8b. production sheet: slicer + cost maths; Hallmark for poster design
+    bambu = Path((cfg or {}).get("bambu_studio_path") or r"C:\Program Files\Bambu Studio\bambu-studio.exe")
+    check("Bambu Studio (slicer)", "PASS" if bambu.is_file() else "WARN",
+          str(bambu) if bambu.is_file() else "not found; production sheets estimate from volume",
+          "" if bambu.is_file() else "winget install Bambulab.Bambustudio")
+    if uv:
+        res = subprocess.run([uv, "run", "--quiet", str(REPO_ROOT / "scripts" / "production.py"), "selftest"],
+                             capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=600)
+        check("Production sheet", "PASS" if res.returncode == 0 else "FAIL",
+              "cost selftest passed" if res.returncode == 0 else (res.stdout + res.stderr).strip()[-300:],
+              "" if res.returncode == 0 else "Run: uv run scripts\\production.py selftest")
+    hallmark = Path.home() / ".claude" / "skills" / "hallmark" / "scripts" / "sloplint.mjs"
+    check("Hallmark design skill", "PASS" if hallmark.is_file() else "FAIL",
+          str(hallmark.parent.parent) if hallmark.is_file() else "not installed", "" if hallmark.is_file() else setup_fix)
     token = (cfg or {}).get("thingiverse_token") or os.environ.get("THINGIVERSE_TOKEN")
     check("Thingiverse token (optional)", "INFO", "set" if token else "not set; Thingiverse links need one")
 

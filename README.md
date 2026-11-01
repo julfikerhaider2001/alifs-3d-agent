@@ -63,15 +63,26 @@ Because the plugin runs straight from the clone, `git pull` updates it.
 
 ## Daily use
 
-Start Claude Code in your workspace folder, put a model in `input/`, open Blender, then:
+Start Claude Code in your workspace folder, open Blender, then:
 
 ```
+/alifs-3d-agent:start https://www.printables.com/model/...   # or no link: it asks
 /alifs-3d-agent:shoot chair.fbx
 /alifs-3d-agent:shoot bottle.fbx interior "নতুন বোতল, এখন পাওয়া যাচ্ছে"
 /alifs-3d-agent:fit https://www.printables.com/model/889966-lampshade-for-ikea-holmo-or-any-standard-e27-socke ac
 /alifs-3d-agent:fit C:\Users\me\Downloads\puck-holder.3mf dc "নতুন হোল্ডার"
 /alifs-3d-agent:studio-doctor
 ```
+
+`/start` is the main entry. It asks for the product link or file, then your requirements (lamp, printer,
+filament and colour, part or kit, quantity, poster language and text), then runs: download and licence
+check, fit check, a production PDF (`production/<name>/production.pdf`: material, colour, grams, print time,
+cost and selling price in BDT, sliced with Bambu Studio; rates in `pricing.json`), the render, and posters
+with the logo, price and buy link, designed to Hallmark's anti-AI-design rules. It ends by adding a log
+line and any learnings to `CLAUDE.md` and pushing it to GitHub.
+
+**Always up to date:** a SessionStart hook pulls this repo at the start of every conversation and
+updates the installed plugin when `version` in `.claude-plugin/plugin.json` changes.
 
 `/fit` runs the whole chain: download → fit report (`fit/<name>/report.md`) → live Blender check →
 render → posters. If the part doesn't fit, it stops and asks before rendering.

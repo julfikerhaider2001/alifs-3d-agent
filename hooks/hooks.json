@@ -1,0 +1,17 @@
+{
+  "description": "Pull the alifs-3d-agent clone from GitHub at the start of every conversation and point Claude at the agent's notes.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell",
+            "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "${CLAUDE_PLUGIN_ROOT}/scripts/sync.ps1"],
+            "timeout": 90
+          }
+        ]
+      }
+    ]
+  }
+}

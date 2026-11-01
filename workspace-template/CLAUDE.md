@@ -7,9 +7,12 @@ This folder is a alifs-3d-agent workspace (created by `scripts/setup.ps1` in the
 - `renders/`: `<name>.blend` scenes and rendered PNGs (`<name>_<angle>.png` + `_transparent.png`).
 - `posters/`: poster HTML sources and PNGs (`<name>_feed.png`, `_story.png`, `_facebook.png`).
 - `fit/`: fit-check reports (`fit/<name>/report.md`) and Blender-ready STLs.
+- `production/`: production sheets (`production/<name>/production.pdf`): material, colour, grams, print time, cost and price in BDT.
+- `brand/`: the Borgo Labs logos (copied from the repo by setup).
 - `brand.md` (optional): per-workspace brand sheet; overrides the plugin's `skills/social-poster/brand.md`.
 
 ## Commands
+- `/alifs-3d-agent:start [link or file]`: the main entry. Asks for the product and your requirements, then runs fit check, production PDF, render and posters.
 - `/alifs-3d-agent:shoot <file> [studio|interior] ["poster text"]`: render and make posters.
 - `/alifs-3d-agent:fit <link or file> [ac|dc] ["poster text"]`: download a model, check it fits the AC/DC lamp, render it on the lamp, make posters.
 - `/alifs-3d-agent:studio-doctor`: check the setup when something fails.
@@ -20,4 +23,4 @@ This folder is a alifs-3d-agent workspace (created by `scripts/setup.ps1` in the
 - Final renders run headless through `scripts/render.py`, never through MCP.
 - Poster text, especially Bangla, is rendered by the browser (Playwright), never by Pillow.
 - Don't delete or overwrite files in `input/`.
-- Never get around a website's login or bot checks to download a model; ask the user for the downloaded file instead.
+- Never get around a website's login or bot checks to download a model. Open the page in the user's browser and watch Downloads for the file instead.
