@@ -224,7 +224,8 @@ Get-ChildItem $template -Recurse -Force | ForEach-Object {
     elseif ($_.Name -ne '.gitkeep' -and -not (Test-Path $dest)) { Copy-Item $_.FullName $dest; $copied++ }
 }
 $cfg.workspace = (Resolve-Path $Workspace).Path
-Copy-Item (Join-Path $RepoRoot 'brand') (Join-Path $Workspace 'brand') -Recurse -Force
+New-Item -ItemType Directory -Force (Join-Path $Workspace 'brand') | Out-Null
+Copy-Item (Join-Path $RepoRoot 'brand\*') (Join-Path $Workspace 'brand') -Force
 # the workspace CLAUDE.md pulls in the agent's shared notes, which live in the GitHub repo
 $wsClaude = Join-Path $Workspace 'CLAUDE.md'
 $import = "@$((Join-Path $RepoRoot 'CLAUDE.md') -replace '\\','/')"
