@@ -12,6 +12,9 @@ pushes at the end of each run. Read it before using any alifs-3d-agent skill.
   and watch `~/Downloads`; the public MakerWorld design API is fine for metadata.
 - Selling prints of someone else's design needs a licence that allows it. Say so before adding a price.
 - Posters follow Hallmark (`~/.claude/skills/hallmark`) and brand.md; run sloplint before export.
+- The universal memory (`julfikerhaider2001/Claude-memory-of-mine`, installed per PC with its
+  `system/install.ps1`) also writes here: after every session with 3D work, its curator adds Learnings
+  and Log lines to this file and pushes. General lessons go to its `domains/3d-design/`.
 - Changing skills, agents, scripts or pricing.json: bump `version` in `.claude-plugin/plugin.json` in
   the same commit. Installed copies only update when the version changes.
 
